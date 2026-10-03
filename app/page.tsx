@@ -19,15 +19,29 @@ const languageOptions: { code: Locale; short: string; name: string; native: stri
 ]
 
 const personNames: Record<Locale, { first: string; last: string }> = {
-  uk: { first: 'Данило', last: 'Іванов' }, en: { first: 'Danylo', last: 'Ivanov' }, ru: { first: 'Данило', last: 'Иванов' },
-  pl: { first: 'Danyło', last: 'Iwanow' }, de: { first: 'Danylo', last: 'Iwanow' }, fr: { first: 'Danylo', last: 'Ivanov' },
-  es: { first: 'Danylo', last: 'Ivanov' }, pt: { first: 'Danylo', last: 'Ivanov' }, ja: { first: 'ダニーロ', last: 'イワノフ' }, zh: { first: '达尼洛', last: '伊万诺夫' },
+  uk: { first: 'Данило', last: 'Іванов' },
+  en: { first: 'Danylo', last: 'Ivanov' },
+  ru: { first: 'Данило', last: 'Иванов' },
+  pl: { first: 'Danyło', last: 'Iwanow' },
+  de: { first: 'Danylo', last: 'Iwanow' },
+  fr: { first: 'Danylo', last: 'Ivanov' },
+  es: { first: 'Danylo', last: 'Ivánov' },
+  pt: { first: 'Danylo', last: 'Ivanov' },
+  ja: { first: 'ダニーロ', last: 'イワノフ' },
+  zh: { first: '达尼洛', last: '伊万诺夫' },
 }
 
 const monograms: Record<Locale, { first: string; last: string }> = {
-  uk: { first: 'Д', last: 'І' }, en: { first: 'D', last: 'I' }, ru: { first: 'Д', last: 'И' },
-  pl: { first: 'D', last: 'I' }, de: { first: 'D', last: 'I' }, fr: { first: 'D', last: 'I' },
-  es: { first: 'D', last: 'I' }, pt: { first: 'D', last: 'I' }, ja: { first: 'ダ', last: 'イ' }, zh: { first: '达', last: '伊' },
+  uk: { first: 'Д', last: 'І' },
+  en: { first: 'D', last: 'I' },
+  ru: { first: 'Д', last: 'И' },
+  pl: { first: 'D', last: 'I' },
+  de: { first: 'D', last: 'I' },
+  fr: { first: 'D', last: 'I' },
+  es: { first: 'D', last: 'I' },
+  pt: { first: 'D', last: 'I' },
+  ja: { first: 'ダ', last: 'イ' },
+  zh: { first: '达', last: '伊' },
 }
 
 const copy = {
@@ -56,12 +70,12 @@ const copy = {
   }
 } as const
 
-const localizedCopy = { ...copy, ru: copy.en, pl: copy.en, de: copy.en, fr: copy.en, es: copy.en, pt: copy.en, ja: copy.en, zh: copy.en } as Record<Locale, (typeof copy)['uk']>
+const localizedCopy = { ...copy, ru: copy.en, pl: copy.en, de: copy.en, fr: copy.en, es: copy.en, pt: copy.en, ja: copy.en, zh: copy.en } as unknown as Record<Locale, (typeof copy)['uk']>
 
 const works = [
   { year: '2026', type: { uk: 'STORYTELLING · ЕСЕ', en: 'STORYTELLING · ESSAY' }, title: { uk: 'Книга, яка вплинула на моє професійне та наукове становлення', en: 'A book that shaped my professional and scientific growth' }, venue: { uk: '«Наука та освіта в історіях» · ХНПУ', en: '“Science and education in stories” · KhNPU' }, authors: 'Данило Іванов, Анна Крисевич', tone: 'cyan' },
   { year: '2025', type: { uk: 'ТЕЗИ · ФІЗИКА', en: 'ABSTRACTS · PHYSICS' }, title: { uk: 'Елементи теорії поля в задачах фізики', en: 'Elements of field theory in physics problems' }, venue: { uk: '«Інноваційні педагогічні технології в цифровій школі»', en: '“Innovative pedagogical technologies in the digital school”' }, authors: 'Данило Іванов, Олександр Чібісов', tone: 'lime' },
-  { year: '2025', type: { uk: 'НАУКОВА ПРАЦЯ', en: 'RESEARCH PAPER' }, title: { uk: 'Формування графічних умінь учнів у навчанні математики', en: 'Developing students’ graphic skills in mathematics education' }, venue: { uk: '«Наумовські читання» · XXIII конференція', en: '“Naumov Readings” · XXIII conference' }, authors: 'Тамара Дейніченко, Данило Іванов, Іван Хоменко', tone: 'violet' },
+  { year: '2025', type: { uk: 'НАУКОВА ПРАЦЯ', en: 'RESEARCH PAPER' }, title: { uk: 'Формування графічних умінь учнів у ��авчанні математики', en: 'Developing students’ graphic skills in mathematics education' }, venue: { uk: '«Наумовські читання» · XXIII конференція', en: '“Naumov Readings” · XXIII conference' }, authors: 'Тамара Дейніченко, Данило Іванов, Іван Хоменко', tone: 'violet' },
   { year: '2025', type: { uk: 'НАУКОВА ПРАЦЯ', en: 'RESEARCH PAPER' }, title: { uk: 'Застосування комп’ютера в навчальному процесі з математики', en: 'Using computers in the mathematics learning process' }, venue: { uk: '«Наумовські читання» · XXIII конференція', en: '“Naumov Readings” · XXIII conference' }, authors: 'Тамара Дейніченко, Данило Іванов та ін.', tone: 'orange' },
   { year: '2025', type: { uk: 'ДОСЛІДЖЕННЯ', en: 'RESEARCH' }, title: { uk: 'Технологізація навчального процесу з математики: історичний аспект', en: 'Technologization of mathematics education: a historical perspective' }, venue: { uk: '«Наумовські читання» · XXIII конференція', en: '“Naumov Readings” · XXIII conference' }, authors: 'Тамара Дейніченко, Данило Іванов та ін.', tone: 'cyan' },
 ]
@@ -75,7 +89,7 @@ export default function Page() {
     <section className="hero section-pad" id="top"><div className="hero-copy"><p className="eyebrow"><span className="pulse-dot" /> {t.label}</p><h1>{person.first}<br /><em>{person.last}</em></h1><p className="hero-lead">{t.lead}</p><div className="hero-actions"><a className="button button-primary" href="#works">{t.view} <ArrowUpRight /></a><a className="text-link" href="#about">{t.story} <ChevronRight /></a></div></div><div className="hero-card"><div className="card-top"><span>PROFILE / 04</span><span>2026</span></div><div className="monogram">{monograms[locale].first}<span>{monograms[locale].last}</span></div><div className="card-bottom"><span>{t.card.split('\n').map((line) => <span key={line}>{line}<br /></span>)}</span><span className="card-arrow">↗</span></div></div></section>
     <section className="stats section-pad" aria-label="Key statistics">{t.stats.map(([value, label]) => <div className="stat" key={label}><strong>{value}</strong><span>{label}</span></div>)}</section>
     <section className="intro section-pad" id="about"><div className="section-kicker">{t.aboutKicker}</div><div className="intro-grid"><h2>{t.aboutTitle}</h2><div><p className="large-copy">{t.aboutLead}</p><p>{t.aboutText}</p></div></div></section>
-    <section className="works section-pad" id="works"><div className="works-head"><div><div className="section-kicker">{t.worksKicker}</div><h2>{t.worksTitle}</h2></div><div className="filter-row" role="group" aria-label="Filter works">{filters.map((filter) => <button key={filter} className={activeFilter === filter ? 'active' : ''} onClick={() => setActiveFilter(filter)}>{filter === 'all' ? t.all : filter}</button>)}</div></div><div className="work-list">{visibleWorks.map((work, index) => <article className={`work-row ${work.tone}`} key={work.title.uk}><span className="work-number">0{index + 1}</span><div className="work-main"><div className="work-meta"><span>{work.type[locale] ?? work.type.en}</span><span>{work.year}</span></div><h3>{work.title[locale] ?? work.title.en}</h3><p>{work.venue[locale] ?? work.venue.en}</p><small>{work.authors}</small></div><a href="#contact" className="round-arrow" aria-label={`${t.ready}: ${work.title[locale] ?? work.title.en}`}><ArrowUpRight /></a></article>)}</div></section>
+    <section className="works section-pad" id="works"><div className="works-head"><div><div className="section-kicker">{t.worksKicker}</div><h2>{t.worksTitle}</h2></div><div className="filter-row" role="group" aria-label="Filter works">{filters.map((filter) => <button key={filter} className={activeFilter === filter ? 'active' : ''} onClick={() => setActiveFilter(filter)}>{filter === 'all' ? t.all : filter}</button>)}</div></div><div className="work-list">{visibleWorks.map((work, index) => <article className={`work-row ${work.tone}`} key={work.title.uk}><span className="work-number">0{index + 1}</span><div className="work-main"><div className="work-meta"><span>{work.type[locale === 'uk' ? 'uk' : 'en']}</span><span>{work.year}</span></div><h3>{work.title[locale === 'uk' ? 'uk' : 'en']}</h3><p>{work.venue[locale === 'uk' ? 'uk' : 'en']}</p><small>{work.authors}</small></div><a href="#contact" className="round-arrow" aria-label={`${t.ready}: ${work.title[locale === 'uk' ? 'uk' : 'en']}`}><ArrowUpRight /></a></article>)}</div></section>
     <section className="path section-pad" id="path"><div className="section-kicker">{t.pathKicker}</div><div className="path-grid"><h2>{t.pathTitle}</h2><div className="timeline"><div className="timeline-item"><b>2022 — now</b><span>ХНПУ ім. Г. С. Сковороди</span><p>{t.degree}</p></div><div className="timeline-item"><b>2025 — now</b><span>{locale === 'uk' ? 'Наукова робота' : 'Research work'}</span><p>{t.research}</p></div><div className="timeline-item"><b>{locale === 'uk' ? 'Далі — більше' : 'Next — more'}</b><span>{locale === 'uk' ? 'Освіта, що працює' : 'Education that works'}</span><p>{t.next}</p></div></div></div></section>
     <footer className="footer section-pad" id="contact"><div><p className="eyebrow">{t.footerEyebrow}</p><h2>{t.footerTitle}</h2></div><a className="button button-primary" href="mailto:danilo.ivanov@example.com">{t.write} <ArrowUpRight /></a><div className="footer-bottom"><span>© 2026 {person.first} {person.last}</span><span>{t.university}</span><span><BookOpen /> Academic portfolio</span></div></footer>
   </main>
