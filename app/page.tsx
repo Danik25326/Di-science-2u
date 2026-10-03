@@ -3,7 +3,26 @@
 import { useMemo, useState } from 'react'
 import { ArrowUpRight, BookOpen, ChevronRight, Menu, X } from 'lucide-react'
 
-type Locale = 'uk' | 'en'
+type Locale = 'uk' | 'en' | 'ru' | 'pl' | 'de' | 'fr' | 'es' | 'pt' | 'ja' | 'zh'
+
+const languageOptions: { code: Locale; short: string; name: string; native: string }[] = [
+  { code: 'en', short: 'EN', name: 'English', native: 'English' },
+  { code: 'uk', short: 'UA', name: 'Ukrainian', native: 'Українська' },
+  { code: 'ru', short: 'RU', name: 'Russian', native: 'Русский' },
+  { code: 'pl', short: 'PL', name: 'Polish', native: 'Polski' },
+  { code: 'de', short: 'DE', name: 'German', native: 'Deutsch' },
+  { code: 'fr', short: 'FR', name: 'French', native: 'Français' },
+  { code: 'es', short: 'ES', name: 'Spanish', native: 'Español' },
+  { code: 'pt', short: 'BR', name: 'Portuguese', native: 'Português' },
+  { code: 'ja', short: 'JP', name: 'Japanese', native: '日本語' },
+  { code: 'zh', short: 'CN', name: 'Chinese', native: '中文' },
+]
+
+const personNames: Record<Locale, { first: string; last: string }> = {
+  uk: { first: 'Данило', last: 'Іванов' }, en: { first: 'Danylo', last: 'Ivanov' }, ru: { first: 'Данило', last: 'Иванов' },
+  pl: { first: 'Danyło', last: 'Iwanow' }, de: { first: 'Danylo', last: 'Iwanow' }, fr: { first: 'Danylo', last: 'Ivanov' },
+  es: { first: 'Danylo', last: 'Ivanov' }, pt: { first: 'Danylo', last: 'Ivanov' }, ja: { first: 'ダニーロ', last: 'イワノフ' }, zh: { first: '达尼洛', last: '伊万诺夫' },
+}
 
 const copy = {
   uk: {
@@ -31,6 +50,8 @@ const copy = {
   }
 } as const
 
+const localizedCopy = { ...copy, ru: copy.en, pl: copy.en, de: copy.en, fr: copy.en, es: copy.en, pt: copy.en, ja: copy.en, zh: copy.en } as Record<Locale, (typeof copy)['uk']>
+
 const works = [
   { year: '2026', type: { uk: 'STORYTELLING · ЕСЕ', en: 'STORYTELLING · ESSAY' }, title: { uk: 'Книга, яка вплинула на моє професійне та наукове становлення', en: 'A book that shaped my professional and scientific growth' }, venue: { uk: '«Наука та освіта в історіях» · ХНПУ', en: '“Science and education in stories” · KhNPU' }, authors: 'Данило Іванов, Анна Крисевич', tone: 'cyan' },
   { year: '2025', type: { uk: 'ТЕЗИ · ФІЗИКА', en: 'ABSTRACTS · PHYSICS' }, title: { uk: 'Елементи теорії поля в задачах фізики', en: 'Elements of field theory in physics problems' }, venue: { uk: '«Інноваційні педагогічні технології в цифровій школі»', en: '“Innovative pedagogical technologies in the digital school”' }, authors: 'Данило Іванов, Олександр Чібісов', tone: 'lime' },
@@ -40,15 +61,16 @@ const works = [
 ]
 
 export default function Page() {
-  const [locale, setLocale] = useState<Locale>('uk'); const [activeFilter, setActiveFilter] = useState('all'); const [menuOpen, setMenuOpen] = useState(false)
-  const t = copy[locale]; const filters = ['all', '2026', '2025']; const visibleWorks = useMemo(() => activeFilter === 'all' ? works : works.filter((work) => work.year === activeFilter), [activeFilter])
+  const [locale, setLocale] = useState<Locale>('uk'); const [activeFilter, setActiveFilter] = useState('all'); const [menuOpen, setMenuOpen] = useState(false); const [languageOpen, setLanguageOpen] = useState(false)
+  const t = localizedCopy[locale]; const person = personNames[locale]; const filters = ['all', '2026', '2025']; const visibleWorks = useMemo(() => activeFilter === 'all' ? works : works.filter((work) => work.year === activeFilter), [activeFilter])
   return <main className="site-shell">
-    <nav className="nav-wrap" aria-label="Primary navigation"><a className="brand" href="#top" aria-label="Home"><span>DI</span><small>{t.profile}<br />{t.profile2}</small></a><button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-label={menuOpen ? t.close : t.open}>{menuOpen ? <X /> : <Menu />}</button><div className={`nav-links ${menuOpen ? 'is-open' : ''}`}><a href="#about" onClick={() => setMenuOpen(false)}>{t.nav[0]}</a><a href="#works" onClick={() => setMenuOpen(false)}>{t.nav[1]}</a><a href="#path" onClick={() => setMenuOpen(false)}>{t.nav[2]}</a><button className="language-switch" onClick={() => setLocale(locale === 'uk' ? 'en' : 'uk')} aria-label={`${t.language}: ${locale === 'uk' ? 'English' : 'Українська'}`}><span className={locale === 'uk' ? 'selected' : ''}>UA</span><span>/</span><span className={locale === 'en' ? 'selected' : ''}>EN</span></button><a className="nav-contact" href="mailto:danilo.ivanov@example.com" onClick={() => setMenuOpen(false)}>{t.contact} <ArrowUpRight /></a></div></nav>
-    <section className="hero section-pad" id="top"><div className="hero-copy"><p className="eyebrow"><span className="pulse-dot" /> {t.label}</p><h1>Данило<br /><em>Іванов</em></h1><p className="hero-lead">{t.lead}</p><div className="hero-actions"><a className="button button-primary" href="#works">{t.view} <ArrowUpRight /></a><a className="text-link" href="#about">{t.story} <ChevronRight /></a></div></div><div className="hero-card"><div className="card-top"><span>PROFILE / 04</span><span>2026</span></div><div className="monogram">Д<span>І</span></div><div className="card-bottom"><span>{t.card.split('\n').map((line) => <span key={line}>{line}<br /></span>)}</span><span className="card-arrow">↗</span></div></div></section>
+    <nav className="nav-wrap" aria-label="Primary navigation"><a className="brand" href="#top" aria-label="Home"><span>DI</span><small>{t.profile}<br />{t.profile2}</small></a><button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-label={menuOpen ? t.close : t.open}>{menuOpen ? <X /> : <Menu />}</button><div className={`nav-links ${menuOpen ? 'is-open' : ''}`}><a href="#about" onClick={() => setMenuOpen(false)}>{t.nav[0]}</a><a href="#works" onClick={() => setMenuOpen(false)}>{t.nav[1]}</a><a href="#path" onClick={() => setMenuOpen(false)}>{t.nav[2]}</a><button className="language-switch" onClick={() => setLanguageOpen(!languageOpen)} aria-expanded={languageOpen} aria-haspopup="dialog" aria-label={t.language}><span className="language-current">{languageOptions.find((item) => item.code === locale)?.short}</span><span>⌄</span></button><a className="nav-contact" href="mailto:danilo.ivanov@example.com" onClick={() => setMenuOpen(false)}>{t.contact} <ArrowUpRight /></a></div></nav>
+    {languageOpen && <div className="language-overlay" role="presentation" onClick={() => setLanguageOpen(false)}><section className="language-panel" role="dialog" aria-modal="true" aria-labelledby="language-title" onClick={(event) => event.stopPropagation()}><div className="language-panel-head"><div><p className="section-kicker">SELECT LANGUAGE</p><h2 id="language-title">{t.language}</h2></div><button className="language-close" onClick={() => setLanguageOpen(false)} aria-label={t.close}><X /></button></div><div className="language-grid">{languageOptions.map((option) => <button key={option.code} className={`language-option ${locale === option.code ? 'is-selected' : ''}`} onClick={() => { setLocale(option.code); setLanguageOpen(false) }}><strong>{option.short}</strong><span><b>{option.name}</b><small>{option.native}</small></span></button>)}</div></section></div>}
+    <section className="hero section-pad" id="top"><div className="hero-copy"><p className="eyebrow"><span className="pulse-dot" /> {t.label}</p><h1>{person.first}<br /><em>{person.last}</em></h1><p className="hero-lead">{t.lead}</p><div className="hero-actions"><a className="button button-primary" href="#works">{t.view} <ArrowUpRight /></a><a className="text-link" href="#about">{t.story} <ChevronRight /></a></div></div><div className="hero-card"><div className="card-top"><span>PROFILE / 04</span><span>2026</span></div><div className="monogram">Д<span>І</span></div><div className="card-bottom"><span>{t.card.split('\n').map((line) => <span key={line}>{line}<br /></span>)}</span><span className="card-arrow">↗</span></div></div></section>
     <section className="stats section-pad" aria-label="Key statistics">{t.stats.map(([value, label]) => <div className="stat" key={label}><strong>{value}</strong><span>{label}</span></div>)}</section>
     <section className="intro section-pad" id="about"><div className="section-kicker">{t.aboutKicker}</div><div className="intro-grid"><h2>{t.aboutTitle}</h2><div><p className="large-copy">{t.aboutLead}</p><p>{t.aboutText}</p></div></div></section>
-    <section className="works section-pad" id="works"><div className="works-head"><div><div className="section-kicker">{t.worksKicker}</div><h2>{t.worksTitle}</h2></div><div className="filter-row" role="group" aria-label="Filter works">{filters.map((filter) => <button key={filter} className={activeFilter === filter ? 'active' : ''} onClick={() => setActiveFilter(filter)}>{filter === 'all' ? t.all : filter}</button>)}</div></div><div className="work-list">{visibleWorks.map((work, index) => <article className={`work-row ${work.tone}`} key={work.title.uk}><span className="work-number">0{index + 1}</span><div className="work-main"><div className="work-meta"><span>{work.type[locale]}</span><span>{work.year}</span></div><h3>{work.title[locale]}</h3><p>{work.venue[locale]}</p><small>{work.authors}</small></div><a href="#contact" className="round-arrow" aria-label={`${t.ready}: ${work.title[locale]}`}><ArrowUpRight /></a></article>)}</div></section>
+    <section className="works section-pad" id="works"><div className="works-head"><div><div className="section-kicker">{t.worksKicker}</div><h2>{t.worksTitle}</h2></div><div className="filter-row" role="group" aria-label="Filter works">{filters.map((filter) => <button key={filter} className={activeFilter === filter ? 'active' : ''} onClick={() => setActiveFilter(filter)}>{filter === 'all' ? t.all : filter}</button>)}</div></div><div className="work-list">{visibleWorks.map((work, index) => <article className={`work-row ${work.tone}`} key={work.title.uk}><span className="work-number">0{index + 1}</span><div className="work-main"><div className="work-meta"><span>{work.type[locale] ?? work.type.en}</span><span>{work.year}</span></div><h3>{work.title[locale] ?? work.title.en}</h3><p>{work.venue[locale] ?? work.venue.en}</p><small>{work.authors}</small></div><a href="#contact" className="round-arrow" aria-label={`${t.ready}: ${work.title[locale] ?? work.title.en}`}><ArrowUpRight /></a></article>)}</div></section>
     <section className="path section-pad" id="path"><div className="section-kicker">{t.pathKicker}</div><div className="path-grid"><h2>{t.pathTitle}</h2><div className="timeline"><div className="timeline-item"><b>2022 — now</b><span>ХНПУ ім. Г. С. Сковороди</span><p>{t.degree}</p></div><div className="timeline-item"><b>2025 — now</b><span>{locale === 'uk' ? 'Наукова робота' : 'Research work'}</span><p>{t.research}</p></div><div className="timeline-item"><b>{locale === 'uk' ? 'Далі — більше' : 'Next — more'}</b><span>{locale === 'uk' ? 'Освіта, що працює' : 'Education that works'}</span><p>{t.next}</p></div></div></div></section>
-    <footer className="footer section-pad" id="contact"><div><p className="eyebrow">{t.footerEyebrow}</p><h2>{t.footerTitle}</h2></div><a className="button button-primary" href="mailto:danilo.ivanov@example.com">{t.write} <ArrowUpRight /></a><div className="footer-bottom"><span>© 2026 Данило Іванов</span><span>{t.university}</span><span><BookOpen /> Academic portfolio</span></div></footer>
+    <footer className="footer section-pad" id="contact"><div><p className="eyebrow">{t.footerEyebrow}</p><h2>{t.footerTitle}</h2></div><a className="button button-primary" href="mailto:danilo.ivanov@example.com">{t.write} <ArrowUpRight /></a><div className="footer-bottom"><span>© 2026 {person.first} {person.last}</span><span>{t.university}</span><span><BookOpen /> Academic portfolio</span></div></footer>
   </main>
 }
