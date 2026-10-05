@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next'
 
-const siteUrl = 'https://dl404.is-a.dev'
+const siteUrl = 'https://di-science.vercel.app'
 
 export default function robots(): MetadataRoute.Robots {
   return {
