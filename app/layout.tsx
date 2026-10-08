@@ -69,6 +69,9 @@ export const metadata: Metadata = {
     },
   },
   generator: 'v0.app',
+  verification: {
+    google: 'TwcCzZHJ-x1NTA9UQpnOAW75n__9WGeVfL_NRZiBSWs',
+  },
   icons: {
     icon: [
       {
